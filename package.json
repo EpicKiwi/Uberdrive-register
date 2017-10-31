@@ -1,0 +1,27 @@
+{
+  "name": "uberdrive-neo4j",
+  "version": "1.0.0",
+  "description": "Enregistreur et générateur de données Neo4j provenant de la SWAPI",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "docker": "docker run -it --rm -p 7474:7474 -p 7687:7687 neo4j",
+    "dev": "nodemon ./src/index.js",
+    "default": "node ./src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EpicKiwi/Uberdrive-register.git"
+  },
+  "author": "EpicKiwi <me@epickiwi.fr>",
+  "license": "GPLV3",
+  "bugs": {
+    "url": "https://github.com/EpicKiwi/Uberdrive-register/issues"
+  },
+  "homepage": "https://github.com/EpicKiwi/Uberdrive-register#readme",
+  "devDependencies": {},
+  "dependencies": {
+    "neo4j-driver": "^1.4.0",
+    "request": "^2.83.0"
+  }
+}
