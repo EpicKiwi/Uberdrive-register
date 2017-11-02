@@ -3,7 +3,7 @@ const db = require("./db")
 module.exports = {
 
     eraseAll(){
-        let query = `MATCH (n)-[r]->() DELETE n,r`
+        let query = `MATCH (n)-[r]-() DELETE n,r`
         let query2 = `MATCH (n) DELETE n`
         return Promise.all([db.getSession().run(query),db.getSession().run(query2)])
     },
@@ -48,11 +48,11 @@ module.exports = {
                 if(planet.name == "unknown")
                     continue;
                 let distance = Math.round(10+(Math.random()*190))
-                let query = `MATCH (n:Planet {name: "${planet.name}"}),(m:Planet {name: "${otherPlanet.name}"}) MERGE (n)-[r:Bridge]->(m)
+                let query = `MATCH (n:Planet {name: "${planet.name}"}),(m:Planet {name: "${otherPlanet.name}"}) MERGE (n)-[r:Bridge]-(m)
                             ON CREATE SET
                                 r.distance = ${distance}`
                 promises.push(db.getSession().run(query))
-                query = `MATCH (n:Planet {name: "${otherPlanet.name}"}),(m:Planet {name: "${planet.name}"}) MERGE (n)-[r:Bridge]->(m)
+                query = `MATCH (n:Planet {name: "${otherPlanet.name}"}),(m:Planet {name: "${planet.name}"}) MERGE (n)-[r:Bridge]-(m)
                             ON CREATE SET
                                 r.distance = ${distance}`
                 promises.push(db.getSession().run(query))
@@ -107,7 +107,7 @@ module.exports = {
                 let planet = planetList[Math.floor(Math.random()*planetList.length)]
                 if(planet.name == "unknown" || starship.name == "unknown" || starship["cost_in_credits"] == "unknown")
                     continue;
-                let query = `MATCH (s:Ship {name: "${starship.name}"}),(p:Planet {name: "${planet.name}"}) MERGE (s)-[r:LandedOn]->(p)`
+                let query = `MATCH (s:Ship {name: "${starship.name}"}),(p:Planet {name: "${planet.name}"}) MERGE (s)-[r:LandedOn]-(p)`
                 promises.push(db.getSession().run(query))
             }
             Promise.all(promises)
@@ -155,7 +155,7 @@ module.exports = {
                                     (p:Planet {name: "${fromPlanet.name}"}),
                                     (q:Planet {name: "${toPlanet.name}"}),
                                     (u:User {name: "${user.name}"})
-                            CREATE (sh:Shipment)-[:From]->(p), (sh)-[:To]->(q), (sh)-[:With]->(s), (u)-[:AskFor]->(sh)`
+                            CREATE (sh:Shipment)-[:From]->(p), (sh)-[:To]->(q), (sh)-[:With]->(s), (u)-[:AskFor]->(sh), (u)-[:LocatedOn]->(p)`
                 promises.push(db.getSession().run(query))
             }
             Promise.all(promises)
